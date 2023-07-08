@@ -1,25 +1,62 @@
-import logo from './logo.svg';
+
 import './App.css';
+import dogimg from "./assests/dog.webp"
+import {BrowserRouter as Router,Routes, Route} from 'react-router-dom';
+import { CssBaseline } from '@mui/material';
+import Login from './components/Login';
+import HomePage from './components/HomePage';
+import NavBar from './components/NavBar';
+import axios from 'axios';
 
 function App() {
+  const handleLogout = async () => {
+    try {
+      const response = await axios.post(
+        'https://frontend-take-home-service.fetch.com/auth/logout',
+        {},
+        {
+          withCredentials: true,
+          headers: {
+            'Content-Type': 'application/json',
+            Connection: 'close',
+          },
+        }
+      );
+      if (response.status === 200 ) {
+        // Redirect to another page upon successful submission
+        window.location.href = '/';
+      } 
+    } catch (error) {
+      console.error(error);
+    }
+  };
+  
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Router>
+      <NavBar handleLogout={handleLogout} />
+      <CssBaseline />
+      <Routes>
+        <Route
+          path="/"
+          element={
+            <div className="container mt-3">
+              <div className="row">
+                <div className="col-md-5">
+                  <Login />
+                </div>
+                <div className="col-md-7 my-auto">
+                  <img className="img-fluid w-100" src={dogimg} alt="" />
+                </div>
+              </div>
+            </div>
+          }
+        />
+        <Route path="/homepage" Component={<HomePage />} />
+        <Route path="/complete" element={<NavBar />} />
+      </Routes>
+    </Router>
   );
 }
 
 export default App;
+
