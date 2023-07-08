@@ -22,7 +22,7 @@ function App() {
           },
         }
       );
-      if (response.status === 200 ) {
+      if (response.status === 200 || response.status === 401) {
         // Redirect to another page upon successful submission
         window.location.href = '/';
       } 
@@ -51,7 +51,7 @@ function App() {
             </div>
           }
         />
-        <Route path="/homepage" Component={<HomePage />} />
+        <Route path="/homepage" element={<HomePage />} />
         <Route path="/complete" element={<NavBar />} />
       </Routes>
     </Router>
